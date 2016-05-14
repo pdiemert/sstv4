@@ -11,26 +11,21 @@ namespace mytest2
 {
 	class MainClass
 	{
-		[DllImport("kernel32.dll", SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool AllocConsole();
-
 		public static void Main (string[] args)
 		{
-
-			AllocConsole ();
-
 			StartWebServer ();
 
 			Application.Init ();
 			MainWindow win = new MainWindow ();
-			//win.Fullscreen ();
-			win.Show ();
+			win.Fullscreen ();
+			win.
+			//win.Show ();
 			Application.Run ();
 		}
 
 		private static void StartWebServer()
 		{
+			return;
 			// Module manager handles all modules in the server
 			var moduleManager = new ModuleManager();
 
