@@ -1,0 +1,148 @@
+﻿body {
+	background-color: rgb(63,63,63);
+	padding-top:70px;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently */
+}
+
+.menuItem {
+  xdisplay: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  cursor: pointer;
+  padding: 0 20px;
+  border: none;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  font: normal normal bold 40px/80px "Baumans", Helvetica, sans-serif;
+  color: black;
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  background: rgb(221, 221, 221);
+  -webkit-box-shadow: 0 1px 0 0 rgb(119,119,119) , 0 2px 0 0 rgb(119,119,119) , 0 3px 0 0 rgb(119,119,119) , 0 4px 0 0 rgb(119,119,119) , 0 5px 0 0 rgb(119,119,119) , 0 6px 0 0 rgb(119,119,119) , 0 0 5px 0 rgba(0,0,0,0.0980392) , 0 1px 3px 0 rgba(0,0,0,0.298039) , 0 3px 5px 0 rgba(0,0,0,0.2) , 0 5px 10px 0 rgba(0,0,0,0.247059) , 0 10px 10px 0 rgba(0,0,0,0.2) , 0 20px 20px 0 rgba(0,0,0,0.14902) ;
+  box-shadow: 0 1px 0 0 rgb(119,119,119) , 0 2px 0 0 rgb(119,119,119) , 0 3px 0 0 rgb(119,119,119) , 0 4px 0 0 rgb(119,119,119) , 0 5px 0 0 rgb(119,119,119) , 0 6px 0 0 rgb(119,119,119) , 0 0 5px 0 rgba(0,0,0,0.0980392) , 0 1px 3px 0 rgba(0,0,0,0.298039) , 0 3px 5px 0 rgba(0,0,0,0.2) , 0 5px 10px 0 rgba(0,0,0,0.247059) , 0 10px 10px 0 rgba(0,0,0,0.2) , 0 20px 20px 0 rgba(0,0,0,0.14902) ;
+  text-shadow: 0 1px 0 #FFFFFF ;
+  margin-bottom:20px;
+  text-align: center;
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;
+}
+
+.menuItem:hover {
+  background: #FFFFFF;
+}
+
+.menuItem:xactive {
+  margin: 6px 0 0;
+  background-color: rgb(221, 221, 221);
+  -webkit-box-shadow: 0 -1px 10px 0 rgba(0,0,0,0.247059) , 0 4px 10px 0 rgba(0,0,0,0.2) , 0 14px 20px 0 rgba(0,0,0,0.14902) ;
+  box-shadow: 0 -1px 10px 0 rgba(0,0,0,0.247059) , 0 4px 10px 0 rgba(0,0,0,0.2) , 0 14px 20px 0 rgba(0,0,0,0.14902) ;
+}
+
+.menuItem:focus {
+  background: rgb(221, 221, 221);
+}
+
+.movie {
+	font-family: "Baumans";
+	font-size: 17px;
+	padding: 5px 0 5px 0px;
+	color: #bbb;
+	cursor: pointer;
+	border-bottom: solid 1px #666
+}
+
+.button {
+	-webkit-box-shadow: 0 1px 0 0 rgb(119,119,119) , 0 2px 0 0 rgb(119,119,119) , 0 3px 0 0 rgb(119,119,119) , 0 4px 0 0 rgb(119,119,119) , 0 5px 0 0 rgb(119,119,119) , 0 6px 0 0 rgb(119,119,119) , 0 0 5px 0 rgba(0,0,0,0.0980392) , 0 1px 3px 0 rgba(0,0,0,0.298039) , 0 3px 5px 0 rgba(0,0,0,0.2) , 0 5px 10px 0 rgba(0,0,0,0.247059) , 0 10px 10px 0 rgba(0,0,0,0.2) , 0 20px 20px 0 rgba(0,0,0,0.14902) ;
+	box-shadow: 0 1px 0 0 rgb(119,119,119) , 0 2px 0 0 rgb(119,119,119) , 0 3px 0 0 rgb(119,119,119) , 0 4px 0 0 rgb(119,119,119) , 0 5px 0 0 rgb(119,119,119) , 0 6px 0 0 rgb(119,119,119) , 0 0 5px 0 rgba(0,0,0,0.0980392) , 0 1px 3px 0 rgba(0,0,0,0.298039) , 0 3px 5px 0 rgba(0,0,0,0.2) , 0 5px 10px 0 rgba(0,0,0,0.247059) , 0 10px 10px 0 rgba(0,0,0,0.2) , 0 20px 20px 0 rgba(0,0,0,0.14902) ;
+	cursor: pointer;
+	font-family: "Baumans";
+	text-align: center;
+	color: black;
+ 	-o-text-overflow: clip;
+	text-overflow: clip;
+	background: rgb(221, 221, 221);
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+	border: none;
+	border-radius: 20px;
+	text-shadow: 0 1px 0 #FFFFFF ;
+}
+
+.button:hover {
+  background-color: #FFFFFF;
+}
+
+.backButton {
+	position: fixed;
+	top: 5px;
+	left: 5px;
+	width: 100px;
+	height: 50px;
+	padding:3px;
+	font-size: 30px;
+}
+
+
+
+.playerMinimized {
+	position: fixed;
+	top: 5px;
+	right: 5px;
+	width: 100px;
+	height: 50px;
+	font-size: 13px;
+	padding:3px;
+}
+
+.playerMaximized {
+
+	position: fixed;
+	top: 5px;
+	left: 5px;
+	right: 5px;
+	bottom: 5px;
+	background-color: #888;
+	font-family: "Baumans";
+	font-size: 13px;
+	padding:3px;
+	border-radius: 5px;
+	text-align:center;
+	color: #eee;
+	opacity: .95;
+}
+
+.playerMaximized table {
+	width: 100%;
+}
+
+.playerMaximized td {
+	text-align: center;
+}
+
+
+.play {
+	height: 50px;
+}
+
+.playerMaximized .button
+{
+	height: 75px;
+	font-weight: bold;
+	font-size: 60px;
+	margin-top: 10px;
+}
+
+
+.back {
+	height: 50px !important;
+	font-size: 40px !important;
+}

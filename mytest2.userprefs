@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{5FB13D7B-9971-4BB2-A3D1-FD40285EF53C}|Default">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.ItemProperties.mytest2 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\Pete Diemert\projects\mytest2\mytest2\Program.cs" line="46" column="1" />
+      <Breakpoint file="C:\Users\Pete Diemert\projects\mytest2\mytest2\Program.cs" line="82" column="1" />
+      <Breakpoint file="C:\Users\Pete Diemert\projects\mytest2\mytest2\Program.cs" line="48" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="mytest2\gtk-gui\MainWindow.cs">
+    <Files>
+      <File FileName="mytest2\Program.cs" Line="28" Column="20" />
+      <File FileName="mytest2\app.config" Line="21" Column="3" />
+      <File FileName="mytest2\packages.config" Line="9" Column="34" />
+      <File FileName="mytest2\Db.cs" Line="19" Column="6" />
+      <File FileName="mytest2\Interfaces\IDb.cs" Line="5" Column="3" />
+      <File FileName="mytest2\metadata.cs" Line="1" Column="1" />
+      <File FileName="mytest2\MainWindow.cs" Line="5" Column="26" />
+      <File FileName="mytest2\Properties\AssemblyInfo.cs" Line="28" Column="57" />
+      <File FileName="mytest2\gtk-gui\MainWindow.cs" Line="2" Column="23" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+</Properties>
