@@ -12,22 +12,25 @@ using SSTV4.DataContracts;
 using SSTV4.Interfaces;
 using Mono.Unix;
 using System.Security;
+using System.Threading;
 
 namespace SSTV4
 {
 	public class Player : IPlayer
 	{
-		private static IPlayer sm_Player;
+		private static Player sm_player;
+		private static Media sm_loop;
 
 		private object m_lock = new object();
 		private Media m_currentItem;
 		private Process m_currentPlayer;
 		private StreamWriter m_commandWriter;
 		private StreamReader m_commandReader;
-		private PlayerState m_state = PlayerState.Idle;
+		private PlayerState m_state = PlayerState.Initializing;
 
 		private static Dictionary<PlayerCommand, string> sm_commandMap = new Dictionary<PlayerCommand, string>()
 		{
+			{ PlayerCommand.GetProperty, "get-property" },
 			{ PlayerCommand.SeekF1, "seek 10" },
 			{ PlayerCommand.SeekF2, "seek 60" },
 			{ PlayerCommand.SeekF3, "seek 600" },
@@ -35,6 +38,7 @@ namespace SSTV4
 			{ PlayerCommand.SeekB2, "seek -60" },
 			{ PlayerCommand.SeekB3, "seek -600" },
 			{ PlayerCommand.SeekStart, "seek -60000" },
+			{ PlayerCommand.SetLoop, "set loop" },
 			{ PlayerCommand.Mute, "cycle mute" },
 			{ PlayerCommand.CycleAudio, "cycle audio" },
 			{ PlayerCommand.Pause, "cycle pause" },
@@ -50,12 +54,7 @@ namespace SSTV4
 		{
 			get
 			{
-				if (sm_Player == null)
-				{
-					sm_Player = new Player();
-				}
-
-				return sm_Player;
+				return sm_player;
 			}
 		}
 
@@ -75,6 +74,18 @@ namespace SSTV4
 			}
 		}
 
+		public static void Inititialize()
+		{
+			sm_loop = new Media()
+			{
+				Path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "loop.mov")
+			};
+
+			sm_player = new Player();
+
+			sm_player.Transition(PlayerState.Idle);
+		}
+
 		public void Start(Media m)
 		{
 			if (m == null)
@@ -91,6 +102,11 @@ namespace SSTV4
 
 		public void Command(PlayerCommand command)
 		{
+			if (m_state == PlayerState.Idle)
+			{
+				return;
+			}
+			
 			CommandInt(command, null);
 		}
 
@@ -138,6 +154,20 @@ namespace SSTV4
 
 					switch (m_state)
 					{
+						case PlayerState.Initializing:
+							switch (target)
+							{
+								case PlayerState.Idle:
+									m_currentItem = sm_loop;
+									m_state = PlayerState.Idle;
+									StartVideoPlayer();
+									break;
+									
+								default:
+									throw new Exception("Player transition not expected");
+							}
+							break;
+							
 						case PlayerState.Idle:
 							switch (target)
 							{
@@ -150,8 +180,12 @@ namespace SSTV4
 								case PlayerState.Playing:
 									m_currentItem = m;
 									m_state = PlayerState.Playing;
-									StartVideoPlayer();
+									SendCommand(PlayerCommand.LoadFile, Escape(m.Path));
+									SendCommand(PlayerCommand.SetLoop, "no");
 									break;
+									
+								default:
+									throw new Exception("Player transition not expected");
 							}
 							break;
 
@@ -173,6 +207,9 @@ namespace SSTV4
 									SendCommand(PlayerCommand.Pause, null);
 									m_state = PlayerState.Paused;
 									break;
+									
+								default:
+									throw new Exception("Player transition not expected");
 							}
 							break;
 
@@ -180,8 +217,8 @@ namespace SSTV4
 							switch (target)
 							{
 								case PlayerState.Idle:
-									StopVideoPlayer();
 									m_state = PlayerState.Idle;
+									RestartIdlePlayback();
 									break;
 									
 								case PlayerState.Playing:
@@ -190,6 +227,7 @@ namespace SSTV4
 										// We are pause and a new video is being request
 										m_currentItem = m;
 										SendCommand(PlayerCommand.LoadFile, Escape(m.Path));
+										SendCommand(PlayerCommand.SetLoop, "no");
 									}
 									else
 									{
@@ -201,11 +239,25 @@ namespace SSTV4
 									
 								case PlayerState.Paused:
 									break;
+									
+								default:
+									throw new Exception("Player transition not expected");
 							}
 							break;
+							
+						default:
+							throw new Exception("Player transition not expected");
 					}
 				}
 			}
+		}
+
+		private void RestartIdlePlayback()
+		{
+			m_currentItem = sm_loop;
+
+			SendCommand(PlayerCommand.LoadFile, Escape(m_currentItem.Path));
+			SendCommand(PlayerCommand.SetLoop, "inf");
 		}
 
 		private string Escape(string txt)
@@ -230,15 +282,17 @@ namespace SSTV4
 				exepath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 				mpvpath = Path.Combine(exepath, Path.Combine("..", "..", "mpv.mac", "MacOS"));
 				player = Path.Combine(mpvpath, "mpv");
-
 			}
 
-			var args = "--audio-channels=6 --quiet --ontop --input-ipc-server=/tmp/mpv-socket --script=\"" + Path.Combine(exepath, "mpvslave.lua") + "\"";
+			var args =  "--audio-channels=6 --quiet --ontop --input-ipc-server=/tmp/mpv-socket --script=\"" + Path.Combine(exepath, "mpvslave.lua") + "\"";
 
 			if (MainClass.Configuration.Fullscreen)
 				args += " --fullscreen";
 
-			args += " " + m_currentItem.Path;
+			if (m_state == PlayerState.Idle)
+				args += " --loop=inf";
+			
+			args += " \"" + m_currentItem.Path + "\"";
 
 			Console.WriteLine(player + " " + args);
 
@@ -249,22 +303,10 @@ namespace SSTV4
 				UseShellExecute = false,
 				RedirectStandardInput = true,
 				RedirectStandardOutput = true,
-				WorkingDirectory = mpvpath,
-				//UserName = "Pete Diemert",
-				//Verb = "runas"
+				WorkingDirectory = mpvpath
 			};
-			unsafe
-			{
-				fixed(char * p = "tunafish")
-				{
-					var ss = new SecureString(p, 8);
-					ss.MakeReadOnly();
-					//psi.Password = ss;
-				}
-			}
 			   
 			m_currentPlayer = Process.Start(psi);
-
 
 			if (MainClass.IsOSX)
 			{
@@ -286,15 +328,9 @@ namespace SSTV4
 				m_commandReader = new StreamReader(client);
 			}
 
-			/*
-			Task.Run(() =>
-			{
-				m_currentPlayer.WaitForExit();
-				Console.WriteLine("Player exited!!!!");
-			});
+			Task.Run(new Action(HandlePlayerExit));
 
 			Task.Run(new Action(HandleOutput));
-			*/
 		}
 
 		private void StopVideoPlayer()
@@ -315,8 +351,21 @@ namespace SSTV4
 			{
 				var text = m_currentPlayer.StandardOutput.ReadLine();
 
-				Console.WriteLine(text);
+				Console.WriteLine("Player output: " + text);
 			}
+		}
+
+		private void HandlePlayerExit()
+		{
+			while (!m_currentPlayer.HasExited)
+			{
+				SendCommand(PlayerCommand.GetProperty, "time-pos");
+				Thread.Sleep(1000);
+			}
+
+			m_state = PlayerState.Initializing;
+
+			Transition(PlayerState.Idle);
 		}
 
 		public void Kill()

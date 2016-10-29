@@ -314,6 +314,10 @@ function playerPoll()
 		g_playerState = status.state;
 		g_playing = status.playing;
 
+		// If we go idle, make sure the player is minimized
+		if (g_playerState == "Idle")
+			g_playerMinimized = true;
+
 		updatePlayer();
 	});
 }

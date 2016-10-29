@@ -56,9 +56,7 @@ namespace SSTV4
 
 		public static void Main(string[] args)
 		{
-			//var e = System.Environment.;
-
-			m_config = new Configuration() { Port = 8881, Fullscreen = true };
+			m_config = new Configuration() { Port = 8881, Fullscreen = false };
 
 			if (IsOSX)
 			{
@@ -84,6 +82,10 @@ namespace SSTV4
 
 			//win.Fullscreen ();
 			//win.Show ();
+
+
+			Player.Inititialize();
+
 			StartWebServer();
 
 			Application.Run();

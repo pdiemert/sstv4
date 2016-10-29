@@ -5,6 +5,7 @@ namespace SSTV4.Interfaces
 {
 	public enum PlayerState
 	{
+		Initializing,
 		Idle,
 		Playing,
 		Paused
@@ -12,6 +13,7 @@ namespace SSTV4.Interfaces
 
 	public enum PlayerCommand
 	{
+		GetProperty,
 		SeekF1,
 		SeekF2,
 		SeekF3,
@@ -19,6 +21,7 @@ namespace SSTV4.Interfaces
 		SeekB2,
 		SeekB3,
 		SeekStart,
+		SetLoop,
 		Mute,
 		CycleAudio,
 		Pause,
